@@ -1,3 +1,4 @@
+<!-- src/components/ProductModal.vue -->
 <template>
   <Transition name="modal">
     <div v-if="isOpen" class="modal-overlay" @click="closeModal">
@@ -34,12 +35,23 @@
                 <span class="modal-price">{{ formattedPrice }} ₽</span>
               </div>
 
-              <button @click="toggleFavorite" class="favorite-action-btn" :class="{ active: isFavorite }">
-                <svg viewBox="0 0 24 24" :fill="isFavorite ? 'currentColor' : 'none'" stroke="currentColor">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-                <span>{{ isFavorite ? 'В избранном' : 'В избранное' }}</span>
-              </button>
+              <div class="modal-actions">
+                <button @click="toggleFavorite" class="favorite-action-btn" :class="{ active: isFavorite }">
+                  <svg viewBox="0 0 24 24" :fill="isFavorite ? 'currentColor' : 'none'" stroke="currentColor">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                  <span>{{ isFavorite ? 'В избранном' : 'В избранное' }}</span>
+                </button>
+
+                <router-link :to="`/product/${product.id}`" class="view-full-btn" @click="closeModal">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                  <span>Полное описание</span>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -248,20 +260,31 @@ const toggleFavorite = () => {
   color: #1e293b;
 }
 
-.favorite-action-btn {
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.favorite-action-btn,
+.view-full-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 14px 24px;
-  background: white;
-  border: 2px solid #e2e8f0;
   border-radius: 12px;
-  color: #64748b;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.favorite-action-btn {
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
 }
 
 .favorite-action-btn:hover {
@@ -276,7 +299,19 @@ const toggleFavorite = () => {
   color: white;
 }
 
-.favorite-action-btn svg {
+.view-full-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+}
+
+.view-full-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+.favorite-action-btn svg,
+.view-full-btn svg {
   width: 20px;
   height: 20px;
   stroke-width: 2;

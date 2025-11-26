@@ -1,3 +1,4 @@
+// src/stores/products.js
 import { defineStore } from 'pinia';
 import { products as productsData } from '@/data/products';
 
@@ -51,13 +52,17 @@ export const useProductsStore = defineStore('products', {
   },
 
   actions: {
-    // Поиск товаров
+    // Поиск товаров (только обновляет currentSearch, без сохранения в историю)
     searchProducts(query) {
       this.currentSearch = query;
+    },
+
+    // Подтвердить поиск (Enter или клик по истории) - добавляет в историю
+    confirmSearch(query) {
+      const trimmedQuery = query.trim();
       
-      // Добавляем в историю поиска
-      if (query.trim() && !this.searchHistory.includes(query)) {
-        this.searchHistory.unshift(query);
+      if (trimmedQuery && !this.searchHistory.includes(trimmedQuery)) {
+        this.searchHistory.unshift(trimmedQuery);
         // Оставляем только 5 последних
         if (this.searchHistory.length > 5) {
           this.searchHistory = this.searchHistory.slice(0, 5);
